@@ -1,0 +1,25 @@
+
+{% extends 'base.html' %}
+
+{% block titulo %}{% if dato %}Editar categoría{% else %}Nueva categoría{% endif %}{% endblock %}
+
+{% block contenido %}
+<div class="container mt-4">
+    <h2>{% if dato %}Editar categoría{% else %}Nueva categoría{% endif %}</h2>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" name="nombre" class="form-control" value="{{ dato.nombre if dato else '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea name="descripcion" class="form-control" rows="4">{{ dato.descripcion if dato else '' }}</textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar categoría</button>
+        <a href="{{ url_for('categorias.lista') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

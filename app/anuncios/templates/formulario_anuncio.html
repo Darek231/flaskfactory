@@ -1,0 +1,58 @@
+
+{% extends 'base.html' %}
+
+{% block titulo %}
+{% if dato %}Editar anuncio{% else %}Nuevo anuncio{% endif %}
+{% endblock %}
+
+{% block contenido %}
+<div class="container mt-4">
+    <h2>{% if dato %}Editar anuncio{% else %}Nuevo anuncio{% endif %}</h2>
+
+    {% if not categorias or not usuarios %}
+    <div class="alert alert-warning">
+        Primero registra al menos un usuario y una categoría.
+    </div>
+    {% else %}
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">Título</label>
+            <input type="text" name="titulo" class="form-control"
+                   value="{{ dato.titulo if dato else '' }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea name="descripcion" class="form-control" required>{{ dato.descripcion if dato else '' }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Usuario</label>
+            <select name="id_usuario" class="form-select" required>
+                {% for u in usuarios %}
+                <option value="{{ u.id_usuario }}"
+                    {% if dato and dato.id_usuario == u.id_usuario %}selected{% endif %}>
+                    {{ u.nombre }} {{ u.apellido }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Categoría</label>
+            <select name="id_categoria" class="form-select" required>
+                {% for c in categorias %}
+                <option value="{{ c.id_categoria }}"
+                    {% if dato and dato.id_categoria == c.id_categoria %}selected{% endif %}>
+                    {{ c.nombre }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Guardar anuncio</button>
+        <a href="{{ url_for('anuncios.lista') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
